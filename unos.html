@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="jquery-1.11.0.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="js/form-validation.js"></script>
+    <title>Unos vijesti</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .error {
+            border: 2px solid red;
+        }
+        .error-message {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+
+    <script>
+        function validateForm(event) {
+            let isValid = true;
+
+
+            const title = document.getElementById('title');
+            const summary = document.getElementById('summary');
+            const content = document.getElementById('content');
+            const category = document.getElementById('category');
+            const image = document.getElementById('image');
+
+            const errorMessages = document.querySelectorAll('.error-message');
+            errorMessages.forEach(message => message.remove());
+
+            if (title.value.length < 5 || title.value.length > 30) {
+                isValid = false;
+                title.classList.add('error');
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.innerText = 'Naslov mora imati između 5 i 30 znakova.';
+                title.parentNode.insertBefore(errorMessage, title.nextSibling);
+            } else {
+                title.classList.remove('error');
+            }
+
+            if (summary.value.length < 10 || summary.value.length > 100) {
+                isValid = false;
+                summary.classList.add('error');
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.innerText = 'Kratki sadržaj mora imati između 10 i 100 znakova.';
+                summary.parentNode.insertBefore(errorMessage, summary.nextSibling);
+            } else {
+                summary.classList.remove('error');
+            }
+
+            if (content.value.trim() === '') {
+                isValid = false;
+                content.classList.add('error');
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.innerText = 'Sadržaj nesmije biti prazan.';
+                content.parentNode.insertBefore(errorMessage, content.nextSibling);
+            } else {
+                content.classList.remove('error');
+            }
+
+            if (image.files.length === 0) {
+                isValid = false;
+                image.classList.add('error');
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.innerText = 'Slika mora biti odabrana.';
+                image.parentNode.insertBefore(errorMessage, image.nextSibling);
+            } else {
+                image.classList.remove('error');
+            }
+
+            if (category.value === '') {
+                isValid = false;
+                category.classList.add('error');
+                const errorMessage = document.createElement('div');
+                errorMessage.className = 'error-message';
+                errorMessage.innerText = 'Kategorija mora biti odabrana.';
+                category.parentNode.insertBefore(errorMessage, category.nextSibling);
+            } else {
+                category.classList.remove('error');
+            }
+
+            if (!isValid) {
+                event.preventDefault();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('form').addEventListener('submit', validateForm);
+        });
+    </script>
+</head>
+<body>
+    <header>
+        <h1>News</h1>
+        <hr class="blue-line">
+        <nav>
+            <ul>
+                <li><a href="index.html">HOME</a></li>
+                <li><a href="business_category.html">BUSINESS</a></li>
+                <li><a href="sport_category.html">SPORT</a></li>
+                <li><a href="unos.html">UNOS</a></li>
+                <li><a href="index.php">DODANE VIJESTI</a></li>
+                <li><a href="administrator.php">ADMINISTRATOR</a></li>
+                <li><a href="login.php">PRIJAVA</a></li>
+                <li><a href="registracija.php">REGISTRACIJA</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="main-container">
+        <main>
+            <section id="news-form">
+                <h2>Unos nove vijesti</h2>
+                <form action="skripta.php" method="POST" enctype="multipart/form-data">
+                    <label for="title">Naslov:</label><br>
+                    <input type="text" id="title" name="title" required><br>
+                    <span id="porukaTitle" class="error-message"></span><br>
+                    
+                    <label for="summary">Kratki sadržaj:</label><br>
+                    <textarea id="summary" name="summary" required></textarea><br>
+                    <span id="porukaAbout" class="error-message"></span><br>
+                    
+                    <label for="content">Sadržaj:</label><br>
+                    <textarea id="content" name="content" required></textarea><br>
+                    <span id="porukaContent" class="error-message"></span><br>
+                    
+                    <label for="category">Kategorija:</label><br>
+                    <select id="category" name="category" required>
+                        <option value="">Odaberite kategoriju</option>
+                        <option value="Business">Business</option>
+                        <option value="Sport">Sport</option>
+                    </select><br>
+                    <span id="porukaKategorija" class="error-message"></span><br>
+                    
+                    <label for="image">Slika:</label><br>
+                    <input type="file" id="image" name="image" accept="image/*" required><br>
+                    <span id="porukaSlika" class="error-message"></span><br>
+                    
+                    <label for="display">Spremiti u arhivu:</label>
+                    <input type="checkbox" id="display" name="display" value="1"><br><br>
+                    
+                    <input type="submit" value="Pošalji">
+                </form>
+            </section>
+        </main>
+    </div>
+    <footer>
+        <p>Author: Luka Dombaj | Email: ldombaj@tvz.hr | Year: 2024</p>
+    </footer>
+</body>
+</html>
